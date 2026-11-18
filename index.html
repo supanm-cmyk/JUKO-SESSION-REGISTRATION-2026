@@ -1,62 +1,117 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JUKO Sessions 2026 – Revised Schedule</title>
 <style>
-:root{--navy:#0b3b66;--green:#1d6848;--gold:#d8b64d;--cream:#f7f6f0}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:#20252b;font:16px/1.5 Arial,sans-serif}
-header{text-align:center;background:#fff;padding:26px 15px 20px;border-top:5px solid var(--green)}
-h1{color:var(--navy);font-size:clamp(1.8rem,4vw,2.6rem);margin:0}
-.date,.hours{color:#bd1e1e;font-weight:800;margin:4px 0}
-main{max-width:1400px;margin:auto;padding:20px}
-.note{background:#fff;border-left:5px solid var(--gold);padding:12px 16px;margin-bottom:16px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
-select,input{font:inherit;padding:10px;border:1px solid #c9d1d8;border-radius:7px;background:white}
+:root{--green:#174734;--green2:#245d46;--gold:#d5b45a;--cream:#f7f5ee;--ink:#202923;--muted:#657169;--line:#e0e5df}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 Arial,Helvetica,sans-serif}
+header{background:var(--green);color:#fff;text-align:center;padding:30px 18px 26px;border-bottom:6px solid var(--gold)}
+.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:#e7d9b4;font-weight:700}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.15;margin:8px 0}
+header p{margin:4px 0;color:#f2f1e9}
+.wrap{max-width:1250px;margin:auto;padding:22px 18px 40px}
+.notice{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:14px 16px;margin-bottom:18px}
+.notice strong{color:var(--green)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0}
+.filters label{font-weight:700;color:var(--green)}
+select,input{font:inherit;border:1px solid #cbd3cc;border-radius:8px;background:#fff;padding:10px 12px;color:var(--ink)}
 input{flex:1;min-width:220px}
-.tablewrap{overflow-x:auto;background:white;border:1px solid #ccd2d8}
-table{border-collapse:collapse;width:100%;min-width:1000px}
-th,td{border:1px solid #aaa;padding:12px;text-align:center;vertical-align:middle}
-thead tr:first-child th{background:#fff500;color:#111;font-size:1.05rem}
-thead tr:nth-child(2) th{background:#454545;color:#fff}
-.time{background:#d0d0d0;font-weight:bold;white-space:nowrap}
-.slot{background:var(--navy);color:white;font-weight:bold;width:55px}
-.session{background:#f3f3f3;min-width:180px;font-weight:bold}
-.intro .session{background:#d0d0d0}
-.facilitator{display:block;font-weight:normal;margin-top:3px}
-.hidden{display:none}
-footer{text-align:center;color:#66717b;padding:20px;font-size:.85rem}
-@media(max-width:600px){main{padding:12px}}
-</style></head><body>
-<header><h1>JUKO SESSIONS 2026</h1><div class="date">November 19, 2026</div><p class="hours">5:30 PM – 8:00 PM (35 MINUTES EACH)</p></header>
-<main>
-<div class="note"><strong>Revised Schedule:</strong> Please review the updated session times and venues before registering. Some sessions have been cancelled.</div>
-<div class="controls"><label for="venue">Filter by venue:</label><select id="venue"><option value="all">All venues</option></select><input id="search" type="search" placeholder="Search sessions, topics, or facilitators…"></div>
-<div class="tablewrap"><table><thead>
-<tr><th colspan="2">TIME</th><th colspan="5" id="sessionHeading">SESSIONS</th></tr>
-<tr><th colspan="2">Venue:</th><th>FINE ARTS THEATER (FAT)</th><th>AMR</th><th>LITTLE THEATRE</th><th>HS FACULTY LOUNGE</th><th>MS FACULTY LOUNGE</th></tr>
-</thead><tbody id="rows"></tbody></table></div>
-</main><footer>International School Manila · High School Counseling Office</footer>
+.venue-section{margin:24px 0}
+.venue-heading{font-size:1.2rem;color:var(--green);margin:0 0 10px;padding-bottom:7px;border-bottom:2px solid var(--gold)}
+.sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:12px}
+.session{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden;min-width:0}
+.session.intro{border-top:4px solid var(--gold)}
+.session-head{background:#edf2ed;padding:9px 13px;color:var(--green);font-weight:800;font-size:.88rem}
+.session-body{padding:12px 13px}
+.time{font-size:.77rem;text-transform:uppercase;letter-spacing:.045em;color:var(--green2);font-weight:800}
+.topic{font-weight:700;line-height:1.35;margin:6px 0}
+.facilitator{font-size:.9rem;color:var(--muted)}
+.empty{background:#fff;border:1px solid var(--line);padding:22px;text-align:center;border-radius:10px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:.84rem;padding:22px}
+@media(max-width:560px){.wrap{padding:16px 12px 30px}.filters{align-items:stretch}.filters label{width:100%}select,input{width:100%}}
+</style>
+</head>
+<body>
+<header>
+ <div class="eyebrow">International School Manila · High School Counseling Office</div>
+ <h1>JUKO Sessions 2026</h1>
+ <p><strong>Thursday, November 19, 2026</strong></p>
+ <p>5:30 PM – 8:00 PM · 35 minutes each</p>
+</header>
+<main class="wrap">
+ <div class="notice">
+  <strong>Revised Schedule</strong>
+  <div>Please review the updated sessions, times, and venues before registering.</div>
+  <div style="margin-top:8px"><strong>For Juniors under Ms. Lee:</strong> Please proceed to the Fine Arts Theater (FAT) for the mandatory Intro Session with Mr. Swan. No separate registration is required for this session.</div>
+ </div>
+ <div class="filters">
+  <label for="venueFilter">Filter by venue</label>
+  <select id="venueFilter"><option value="all">All venues</option></select>
+  <input id="search" type="search" placeholder="Search sessions or facilitators…" aria-label="Search sessions or facilitators">
+ </div>
+ <div id="schedule"></div>
+</main>
+<footer>JUKO 2026 · International School Manila</footer>
 <script>
-const venues=[
-{name:"FINE ARTS THEATER (FAT)",s:[["Counselor Session with Juniors of Mr. Swan and Ms. Lee",""],["Country Specific Admission Process: USA","Facilitated by: Mr. Swan"],["Oxford and Cambridge Admission Process","Facilitated by: Mr. Swan"],["The Senior Year: What to Expect, and What You Can Do To Help","Facilitated by: Mr. Swan"]]},
-{name:"AMR",s:[["Counselor Session with Juniors of Ms. Mayo",""],["Country Specific Admission Process: EUROPE","Facilitated by: Ms. Mayo"],["Country Specific Admission Process: UK","Facilitated by: Ms. Mayo"],["Country Specific Admission Process: UK","Facilitated by: Ms. Mayo"]]},
-{name:"LITTLE THEATRE",s:[["Counselor Session with Juniors of Mr. Johnson",""],["Summer Programs","Facilitated by: Mr. Johnson"],["US Essays","Facilitated by: Mr. Johnson"],["US Essays","Facilitated by: Mr. Johnson"]]},
-{name:"HS FACULTY LOUNGE",s:[["Counselor Session with Juniors of Mr. Brooks",""],["Country Specific Admission Process: CANADA","Facilitated by: Mr. Brooks"],["Hidden Gems","Facilitated by: Mr. Brooks"],["Country Specific Admission Process: CANADA","Facilitated by: Mr. Brooks"]]},
-{name:"MS FACULTY LOUNGE",s:[["Counselor Session with Juniors of Ms. Roth",""],["Country Specific Admission Process: AUSTRALIA","Facilitated by: Ms. Roth"],["Career Trends and College Majors that Matter","Facilitated by: Ms. Roth"],["Applying to Undergrad Business Programs","Facilitated by: Ms. Roth"]]}
+const schedule = [
+ {venue:"Fine Arts Theater (FAT)",items:[
+  ["5:30 PM – 6:00 PM","Intro","Counselor Session with Juniors of Mr. Swan and Ms. Lee",""],
+  ["6:05 PM – 6:40 PM","Session 1","Country Specific Admission Process: USA","Mr. Swan"],
+  ["6:45 PM – 7:20 PM","Session 2","Oxford and Cambridge Admission Process","Mr. Swan"],
+  ["7:25 PM – 8:00 PM","Session 3","The Senior Year: What to Expect, and What You Can Do To Help","Mr. Swan"]
+ ]},
+ {venue:"AMR",items:[
+  ["5:30 PM – 6:00 PM","Intro","Counselor Session with Juniors of Ms. Mayo",""],
+  ["6:05 PM – 6:40 PM","Session 1","Country Specific Admission Process: EUROPE","Ms. Mayo"],
+  ["6:45 PM – 7:20 PM","Session 2","Country Specific Admission Process: UK","Ms. Mayo"],
+  ["7:25 PM – 8:00 PM","Session 3","Country Specific Admission Process: UK","Ms. Mayo"]
+ ]},
+ {venue:"Little Theatre",items:[
+  ["5:30 PM – 6:00 PM","Intro","Counselor Session with Juniors of Mr. Johnson",""],
+  ["6:05 PM – 6:40 PM","Session 1","Summer Programs","Mr. Johnson"],
+  ["6:45 PM – 7:20 PM","Session 2","US Essays","Mr. Johnson"],
+  ["7:25 PM – 8:00 PM","Session 3","US Essays","Mr. Johnson"]
+ ]},
+ {venue:"HS Faculty Lounge",items:[
+  ["5:30 PM – 6:00 PM","Intro","Counselor Session with Juniors of Mr. Brooks",""],
+  ["6:05 PM – 6:40 PM","Session 1","Country Specific Admission Process: CANADA","Mr. Brooks"],
+  ["6:45 PM – 7:20 PM","Session 2","Hidden Gems","Mr. Brooks"],
+  ["7:25 PM – 8:00 PM","Session 3","Country Specific Admission Process: CANADA","Mr. Brooks"]
+ ]},
+ {venue:"MS Faculty Lounge",items:[
+  ["5:30 PM – 6:00 PM","Intro","Counselor Session with Juniors of Ms. Roth",""],
+  ["6:05 PM – 6:40 PM","Session 1","Country Specific Admission Process: AUSTRALIA","Ms. Roth"],
+  ["6:45 PM – 7:20 PM","Session 2","Career Trends and College Majors that Matter","Ms. Roth"],
+  ["7:25 PM – 8:00 PM","Session 3","Applying to Undegrad Business Programs","Ms. Roth"]
+ ]}
 ];
-const times=[["5:30 PM – 6:00 PM","Intro"],["6:05 PM – 6:40 PM","1"],["6:45 PM – 7:20 PM","2"],["7:25 PM – 8:00 PM","3"]];
-const venue=document.getElementById("venue"),search=document.getElementById("search"),rows=document.getElementById("rows");
-venues.forEach(v=>{let o=document.createElement("option");o.value=v.name;o.textContent=v.name;venue.appendChild(o)});
+const venueFilter=document.getElementById("venueFilter"),search=document.getElementById("search"),root=document.getElementById("schedule");
+schedule.forEach(v=>{const o=document.createElement("option");o.value=v.venue;o.textContent=v.venue;venueFilter.appendChild(o)});
 function render(){
-const chosen=venue.value,q=search.value.toLowerCase().trim();rows.innerHTML="";
-times.forEach((t,i)=>{let tr=document.createElement("tr");if(i===0)tr.className="intro";
-let a=document.createElement("th");a.className="time";a.textContent=t[0];tr.appendChild(a);
-let b=document.createElement("td");b.className="slot";b.textContent=t[1];tr.appendChild(b);
-venues.forEach(v=>{let td=document.createElement("td");td.className="session";let [title,fac]=v.s[i];
-let ok=(chosen==="all"||chosen===v.name)&&(`${v.name} ${title} ${fac} ${t.join(" ")}`.toLowerCase().includes(q));
-if(ok){let strong=document.createElement("strong");strong.textContent=title;td.appendChild(strong);if(fac){let f=document.createElement("span");f.className="facilitator";f.textContent="("+fac+")";td.appendChild(f)}}else{td.textContent="—";td.style.color="#999"}
-if(chosen!=="all"&&chosen!==v.name)td.classList.add("hidden");tr.appendChild(td)});rows.appendChild(tr)});
-document.querySelectorAll("thead tr:nth-child(2) th").forEach((th,i)=>{if(i>=2)th.classList.toggle("hidden",chosen!=="all"&&venues[i-2].name!==chosen)});
-document.getElementById("sessionHeading").colSpan=chosen==="all"?5:1;
+ const selected=venueFilter.value,q=search.value.trim().toLowerCase();root.innerHTML="";let count=0;
+ schedule.forEach(v=>{
+  if(selected!=="all"&&selected!==v.venue)return;
+  const items=v.items.filter(item=>(v.venue+" "+item.join(" ")).toLowerCase().includes(q));
+  if(!items.length)return;count+=items.length;
+  const section=document.createElement("section");section.className="venue-section";
+  const h=document.createElement("h2");h.className="venue-heading";h.textContent=v.venue;section.appendChild(h);
+  const grid=document.createElement("div");grid.className="sessions";
+  items.forEach(item=>{
+   const card=document.createElement("article");card.className="session"+(item[1]==="Intro"?" intro":"");
+   const head=document.createElement("div");head.className="session-head";head.textContent=item[1];
+   const body=document.createElement("div");body.className="session-body";
+   const time=document.createElement("div");time.className="time";time.textContent=item[0];
+   const topic=document.createElement("div");topic.className="topic";topic.textContent=item[2];
+   body.append(time,topic);
+   if(item[3]){const f=document.createElement("div");f.className="facilitator";f.textContent="Facilitated by: "+item[3];body.appendChild(f)}
+   card.append(head,body);grid.appendChild(card);
+  });
+  section.appendChild(grid);root.appendChild(section);
+ });
+ if(!count){const e=document.createElement("div");e.className="empty";e.textContent="No sessions match your search.";root.appendChild(e)}
 }
-venue.addEventListener("change",render);search.addEventListener("input",render);render();
-</script></body></html>
+venueFilter.addEventListener("change",render);search.addEventListener("input",render);render();
+</script>
+</body></html>
