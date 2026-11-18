@@ -1,299 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JUKO Sessions 2026</title>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JUKO Sessions 2026 – Revised Schedule</title>
 <style>
-:root {
-  --green: #006B3F;
-  --deep: #004D2C;
-  --yellow: #FFD400;
-  --black: #111111;
-  --white: #FFFFFF;
-  --cell: #F1F2EF;
-  --time: #D9DEDA;
+:root{--navy:#0b3b66;--green:#1d6848;--gold:#d8b64d;--cream:#f7f6f0}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:#20252b;font:16px/1.5 Arial,sans-serif}
+header{text-align:center;background:#fff;padding:26px 15px 20px;border-top:5px solid var(--green)}
+h1{color:var(--navy);font-size:clamp(1.8rem,4vw,2.6rem);margin:0}
+.date,.hours{color:#bd1e1e;font-weight:800;margin:4px 0}
+main{max-width:1400px;margin:auto;padding:20px}
+.note{background:#fff;border-left:5px solid var(--gold);padding:12px 16px;margin-bottom:16px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+select,input{font:inherit;padding:10px;border:1px solid #c9d1d8;border-radius:7px;background:white}
+input{flex:1;min-width:220px}
+.tablewrap{overflow-x:auto;background:white;border:1px solid #ccd2d8}
+table{border-collapse:collapse;width:100%;min-width:1000px}
+th,td{border:1px solid #aaa;padding:12px;text-align:center;vertical-align:middle}
+thead tr:first-child th{background:#fff500;color:#111;font-size:1.05rem}
+thead tr:nth-child(2) th{background:#454545;color:#fff}
+.time{background:#d0d0d0;font-weight:bold;white-space:nowrap}
+.slot{background:var(--navy);color:white;font-weight:bold;width:55px}
+.session{background:#f3f3f3;min-width:180px;font-weight:bold}
+.intro .session{background:#d0d0d0}
+.facilitator{display:block;font-weight:normal;margin-top:3px}
+.hidden{display:none}
+footer{text-align:center;color:#66717b;padding:20px;font-size:.85rem}
+@media(max-width:600px){main{padding:12px}}
+</style></head><body>
+<header><h1>JUKO SESSIONS 2026</h1><div class="date">November 19, 2026</div><p class="hours">5:30 PM – 8:00 PM (35 MINUTES EACH)</p></header>
+<main>
+<div class="note"><strong>Revised Schedule:</strong> Please review the updated session times and venues before registering. Some sessions have been cancelled.</div>
+<div class="controls"><label for="venue">Filter by venue:</label><select id="venue"><option value="all">All venues</option></select><input id="search" type="search" placeholder="Search sessions, topics, or facilitators…"></div>
+<div class="tablewrap"><table><thead>
+<tr><th colspan="2">TIME</th><th colspan="5" id="sessionHeading">SESSIONS</th></tr>
+<tr><th colspan="2">Venue:</th><th>FINE ARTS THEATER (FAT)</th><th>AMR</th><th>LITTLE THEATRE</th><th>HS FACULTY LOUNGE</th><th>MS FACULTY LOUNGE</th></tr>
+</thead><tbody id="rows"></tbody></table></div>
+</main><footer>International School Manila · High School Counseling Office</footer>
+<script>
+const venues=[
+{name:"FINE ARTS THEATER (FAT)",s:[["Counselor Session with Juniors of Mr. Swan and Ms. Lee",""],["Country Specific Admission Process: USA","Facilitated by: Mr. Swan"],["Oxford and Cambridge Admission Process","Facilitated by: Mr. Swan"],["The Senior Year: What to Expect, and What You Can Do To Help","Facilitated by: Mr. Swan"]]},
+{name:"AMR",s:[["Counselor Session with Juniors of Ms. Mayo",""],["Country Specific Admission Process: EUROPE","Facilitated by: Ms. Mayo"],["Country Specific Admission Process: UK","Facilitated by: Ms. Mayo"],["Country Specific Admission Process: UK","Facilitated by: Ms. Mayo"]]},
+{name:"LITTLE THEATRE",s:[["Counselor Session with Juniors of Mr. Johnson",""],["Summer Programs","Facilitated by: Mr. Johnson"],["US Essays","Facilitated by: Mr. Johnson"],["US Essays","Facilitated by: Mr. Johnson"]]},
+{name:"HS FACULTY LOUNGE",s:[["Counselor Session with Juniors of Mr. Brooks",""],["Country Specific Admission Process: CANADA","Facilitated by: Mr. Brooks"],["Hidden Gems","Facilitated by: Mr. Brooks"],["Country Specific Admission Process: CANADA","Facilitated by: Mr. Brooks"]]},
+{name:"MS FACULTY LOUNGE",s:[["Counselor Session with Juniors of Ms. Roth",""],["Country Specific Admission Process: AUSTRALIA","Facilitated by: Ms. Roth"],["Career Trends and College Majors that Matter","Facilitated by: Ms. Roth"],["Applying to Undergrad Business Programs","Facilitated by: Ms. Roth"]]}
+];
+const times=[["5:30 PM – 6:00 PM","Intro"],["6:05 PM – 6:40 PM","1"],["6:45 PM – 7:20 PM","2"],["7:25 PM – 8:00 PM","3"]];
+const venue=document.getElementById("venue"),search=document.getElementById("search"),rows=document.getElementById("rows");
+venues.forEach(v=>{let o=document.createElement("option");o.value=v.name;o.textContent=v.name;venue.appendChild(o)});
+function render(){
+const chosen=venue.value,q=search.value.toLowerCase().trim();rows.innerHTML="";
+times.forEach((t,i)=>{let tr=document.createElement("tr");if(i===0)tr.className="intro";
+let a=document.createElement("th");a.className="time";a.textContent=t[0];tr.appendChild(a);
+let b=document.createElement("td");b.className="slot";b.textContent=t[1];tr.appendChild(b);
+venues.forEach(v=>{let td=document.createElement("td");td.className="session";let [title,fac]=v.s[i];
+let ok=(chosen==="all"||chosen===v.name)&&(`${v.name} ${title} ${fac} ${t.join(" ")}`.toLowerCase().includes(q));
+if(ok){let strong=document.createElement("strong");strong.textContent=title;td.appendChild(strong);if(fac){let f=document.createElement("span");f.className="facilitator";f.textContent="("+fac+")";td.appendChild(f)}}else{td.textContent="—";td.style.color="#999"}
+if(chosen!=="all"&&chosen!==v.name)td.classList.add("hidden");tr.appendChild(td)});rows.appendChild(tr)});
+document.querySelectorAll("thead tr:nth-child(2) th").forEach((th,i)=>{if(i>=2)th.classList.toggle("hidden",chosen!=="all"&&venues[i-2].name!==chosen)});
+document.getElementById("sessionHeading").colSpan=chosen==="all"?5:1;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  padding: 0;
-  background: var(--green);
-  color: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
-}
-.page {
-  width: 100%;
-  max-width: 1900px;
-  margin: 0 auto;
-  padding: clamp(12px, 1.8vw, 28px);
-}
-.hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  color: var(--white);
-  padding: 4px 4px 20px;
-}
-h1 {
-  margin: 0;
-  font-size: clamp(27px, 3vw, 42px);
-  line-height: 1.1;
-  font-weight: 900;
-}
-.subtitle {
-  margin-top: 10px;
-  color: var(--yellow);
-  font-size: 15px;
-  font-weight: 900;
-}
-.pill {
-  display: inline-block;
-  background: var(--yellow);
-  color: var(--black);
-  padding: 9px 14px;
-  border-radius: 30px;
-  font-size: 11px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-.registration {
-  background: var(--deep);
-  border: 1px solid rgba(255,255,255,.28);
-  border-radius: 14px;
-  padding: 17px 14px;
-  margin: 0 0 20px;
-  text-align: center;
-}
-.registration p {
-  margin: 0 0 11px;
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-}
-.register-button {
-  display: inline-block;
-  background: var(--yellow);
-  color: var(--black);
-  text-decoration: none;
-  padding: 13px 28px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: .3px;
-}
-.register-button:hover { background: white; }
-.schedule {
-  background: var(--black);
-  border: 1px solid #668574;
-  border-radius: 16px;
-  padding: 15px;
-  margin-bottom: 18px;
-}
-.round { margin-bottom: 14px; }
-.round:last-of-type { margin-bottom: 0; }
-.round-title {
-  color: var(--yellow);
-  font-size: 14px;
-  font-weight: 900;
-  margin: 5px 0 12px;
-  letter-spacing: .2px;
-}
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 3px;
-}
-.schedule-grid {
-  display: grid;
-  grid-template-columns: 142px 90px repeat(6, minmax(155px, 1fr));
-  gap: 5px;
-  min-width: 1240px;
-}
-.head-cell, .time-cell, .session-cell, .presentation-cell {
-  border-radius: 8px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 10px 8px;
-}
-.head-cell {
-  background: var(--yellow);
-  color: var(--black);
-  font-size: 10px;
-  line-height: 1.25;
-  font-weight: 900;
-  min-height: 40px;
-}
-.time-cell {
-  background: var(--time);
-  color: var(--black);
-  font-size: 11px;
-  line-height: 1.3;
-  font-weight: 900;
-  min-height: 66px;
-}
-.session-cell {
-  background: var(--deep);
-  color: white;
-  border: 1px solid var(--yellow);
-  font-size: 13px;
-  font-weight: 900;
-  min-height: 66px;
-}
-.presentation-cell {
-  background: var(--cell);
-  color: var(--black);
-  min-height: 66px;
-  flex-direction: column;
-  gap: 7px;
-}
-.topic {
-  font-size: 12px;
-  line-height: 1.35;
-  font-weight: 900;
-}
-.facilitator {
-  color: #555;
-  font-size: 10px;
-  line-height: 1.3;
-}
-.ask {
-  display: inline-block;
-  width: 100%;
-  background: var(--yellow);
-  color: var(--black);
-  padding: 9px 5px;
-  border-radius: 6px;
-  font-size: 13px;
-  line-height: 1.2;
-  font-weight: 900;
-}
-.scroll-note {
-  color: white;
-  font-size: 11px;
-  margin: 12px 0 0;
-}
-.footer {
-  color: white;
-  text-align: center;
-  font-size: 11px;
-  padding: 10px 5px;
-}
-@media (max-width: 700px) {
-  .schedule { padding: 11px; }
-  .registration { padding: 16px 12px; }
-  .register-button { display: block; width: 100%; }
-  .pill { margin-top: 2px; }
-}
-</style>
-</head>
-<body>
-<main class="page">
-  <header class="hero">
-    <div>
-      <h1>JUKO SESSIONS 2026</h1>
-      <div class="subtitle">NOVEMBER 19, 2026 · 5:30–8:00 PM</div>
-    </div>
-    <span class="pill">INTRO + 3 SESSION ROUNDS</span>
-  </header>
-
-  <section class="registration">
-    <p>Students and parents: Select your preferred presentations for JUKO 2026.</p>
-    <a class="register-button"
-       href="https://docs.google.com/forms/d/e/1FAIpQLSd-RUpp0azjwakG2QiIs6pPfuv4MphPzzAGDKwCzFW9HzzIpg/viewform?usp=sharing&amp;ouid=106352537967297646363"
-       target="_blank" rel="noopener noreferrer">REGISTER FOR JUKO SESSIONS</a>
-  </section>
-
-  <section class="schedule">
-    <div class="round">
-      <div class="round-title">INTRO · 5:30 PM - 6:00 PM</div>
-      <div class="table-wrap">
-        <div class="schedule-grid">
-          <div class="head-cell">TIME</div><div class="head-cell">SESSIONS</div>
-          <div class="head-cell">FINE ARTS THEATER (FAT)</div><div class="head-cell">AMR</div>
-          <div class="head-cell">LITTLE THEATRE</div><div class="head-cell">HS COUNSELING OFFICE</div>
-          <div class="head-cell">HS FACULTY LOUNGE</div><div class="head-cell">MS FACULTY LOUNGE</div>
-
-          <div class="time-cell">5:30 PM - 6:00 PM</div><div class="session-cell">INTRO</div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Mr. Swan</div></div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Ms. Mayo</div></div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Mr. Johnson</div></div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Ms. Lee</div></div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Mr. Brooks</div></div>
-          <div class="presentation-cell"><div class="topic">Counselor Session with Juniors of Ms. Roth</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="round">
-      <div class="round-title">SESSION 1 · 6:05 PM - 6:40 PM</div>
-      <div class="table-wrap">
-        <div class="schedule-grid">
-          <div class="head-cell">TIME</div><div class="head-cell">SESSIONS</div>
-          <div class="head-cell">FINE ARTS THEATER (FAT)</div><div class="head-cell">AMR</div>
-          <div class="head-cell">LITTLE THEATRE</div><div class="head-cell">HS COUNSELING OFFICE</div>
-          <div class="head-cell">HS FACULTY LOUNGE</div><div class="head-cell">MS FACULTY LOUNGE</div>
-
-          <div class="time-cell">6:05 PM - 6:40 PM</div><div class="session-cell">1</div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: USA</div><div class="facilitator">Facilitated by: Mr. Swan</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: EUROPE</div><div class="facilitator">Facilitated by: Ms. Mayo</div></div>
-          <div class="presentation-cell"><div class="topic">Summer Programs</div><div class="facilitator">Facilitated by: Mr. Johnson</div></div>
-          <div class="presentation-cell"><div class="topic">Strengthening your Profile for Health Sciences Program</div><div class="facilitator">Facilitated by: Ms. Lee</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: CANADA</div><div class="facilitator">Facilitated by: Mr. Brooks</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: AUSTRALIA</div><div class="facilitator">Facilitated by: Ms. Roth</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="round">
-      <div class="round-title">SESSION 2 · 6:45 PM - 7:20 PM</div>
-      <div class="table-wrap">
-        <div class="schedule-grid">
-          <div class="head-cell">TIME</div><div class="head-cell">SESSIONS</div>
-          <div class="head-cell">FINE ARTS THEATER (FAT)</div><div class="head-cell">AMR</div>
-          <div class="head-cell">LITTLE THEATRE</div><div class="head-cell">HS COUNSELING OFFICE</div>
-          <div class="head-cell">HS FACULTY LOUNGE</div><div class="head-cell">MS FACULTY LOUNGE</div>
-
-          <div class="time-cell">6:45 PM - 7:20 PM</div><div class="session-cell">2</div>
-          <div class="presentation-cell"><div class="topic">Oxford and Cambridge Admission Process</div><div class="facilitator">Facilitated by: Mr. Swan</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: UK</div><div class="facilitator">Facilitated by: Ms. Mayo</div></div>
-          <div class="presentation-cell"><div class="topic">US Essays</div><div class="facilitator">Facilitated by: Mr. Johnson</div></div>
-          <div class="presentation-cell"><div class="topic">Career Trends and College Majors that Matter</div><div class="facilitator">Facilitated by: Ms. Lee</div></div>
-          <div class="presentation-cell"><div class="topic">Hidden Gems</div><div class="facilitator">Facilitated by: Mr. Brooks</div></div>
-          <div class="presentation-cell"><div class="topic">Applying to Undegrad Business Programs</div><div class="facilitator">Facilitated by: Ms. Roth</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="round">
-      <div class="round-title">SESSION 3 · 7:25 PM - 8:00 PM</div>
-      <div class="table-wrap">
-        <div class="schedule-grid">
-          <div class="head-cell">TIME</div><div class="head-cell">SESSIONS</div>
-          <div class="head-cell">FINE ARTS THEATER (FAT)</div><div class="head-cell">AMR</div>
-          <div class="head-cell">LITTLE THEATRE</div><div class="head-cell">HS COUNSELING OFFICE</div>
-          <div class="head-cell">HS FACULTY LOUNGE</div><div class="head-cell">MS FACULTY LOUNGE</div>
-
-          <div class="time-cell">7:25 PM - 8:00 PM</div><div class="session-cell">3</div>
-          <div class="presentation-cell"><div class="topic">The Senior Year: What to Expect, and What You Can Do To Help</div><div class="facilitator">Facilitated by: Mr. Swan</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: UK</div><div class="facilitator">Facilitated by: Ms. Mayo</div></div>
-          <div class="presentation-cell"><div class="topic">US Essays</div><div class="facilitator">Facilitated by: Mr. Johnson</div></div>
-          <div class="presentation-cell"><div class="ask">_ASK ME ANYTHING_</div></div>
-          <div class="presentation-cell"><div class="topic">Country Specific Admission Process: CANADA</div><div class="facilitator">Facilitated by: Mr. Brooks</div></div>
-          <div class="presentation-cell"><div class="ask">_ASK ME ANYTHING_</div></div>
-        </div>
-      </div>
-    </div>
-
-    <p class="scroll-note">Scroll horizontally on smaller screens to view all six venues.</p>
-  </section>
-
-  <footer class="footer">JUKO SESSIONS 2026 · INTERNATIONAL SCHOOL MANILA</footer>
-</main>
-</body>
-</html>
+venue.addEventListener("change",render);search.addEventListener("input",render);render();
+</script></body></html>
